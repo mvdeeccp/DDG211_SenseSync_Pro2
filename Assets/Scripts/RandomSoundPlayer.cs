@@ -42,4 +42,6 @@ public class RandomSoundPlayer : MonoBehaviour
         // (Optional) เช็คได้ว่ามีลำดับไหนบ้าง
         Debug.Log("Random Sequence: " + string.Join(", ", selectedSounds));
     }
+
+
 }

@@ -24,12 +24,26 @@ public class ColorSequenceManager : MonoBehaviour
 
     IEnumerator RunSequence()
     {
-        yield return StartCoroutine(ShowColorSequence());  // แสดงสีเรียงลำดับ
-        yield return new WaitForSeconds(1f);               // เว้นจังหวะก่อนเล่นเสียงสุ่ม
+        yield return StartCoroutine(ShowColorSequence());  // แสดงสีตามลำดับ
+        yield return new WaitForSeconds(1f);               // เว้นจังหวะก่อนสุ่มเสียงรอบแรก
 
         SetColorSlotsActive(false);                        // ซ่อนช่องสีขาว
-        yield return StartCoroutine(PlayRandomSounds());   // เล่นเสียงสุ่ม 3 เสียง
+        yield return StartCoroutine(PlayRandomSounds());   // เล่นเสียงสุ่มรอบแรก
+
+        yield return new WaitForSeconds(2f);               // พัก 2 วินาที
+
+        yield return StartCoroutine(PlayRandomSoundsRepeat());  // เล่นเสียงเดิมซ้ำรอบสอง
         SetColorSlotsActive(true);                         // แสดงช่องสีขาวกลับมา
+    }
+
+    IEnumerator PlayRandomSoundsRepeat()
+    {
+        // เล่นลำดับเสียงเดิมซ้ำอีกรอบ (ใช้ randomSoundSequence เดิม ไม่สุ่มใหม่)
+        foreach (int soundIndex in randomSoundSequence)
+        {
+            audioSource.PlayOneShot(colorSounds[soundIndex]);
+            yield return new WaitForSeconds(1.5f);  // เว้นระยะระหว่างเสียง
+        }
     }
 
 
@@ -81,8 +95,9 @@ public class ColorSequenceManager : MonoBehaviour
 
         foreach (int soundIndex in randomSoundSequence)
         {
-            audioSource.PlayOneShot(colorSounds[soundIndex]);  // เล่นเสียงอย่างเดียว (ไม่มีสี)
-            yield return new WaitForSeconds(1.5f);             // เว้นระยะ 1.5 วิ
+            // เล่นเสียงละ 1 ครั้ง
+            audioSource.PlayOneShot(colorSounds[soundIndex]);
+            yield return new WaitForSeconds(1.5f);  // เว้นระยะระหว่างเสียง
         }
     }
 
@@ -131,6 +146,30 @@ public class ColorSequenceManager : MonoBehaviour
             slot.gameObject.SetActive(isActive);
         }
     }
+
+    public void CheckPlayerAnswer(ColorPiece[] playerAnswers)
+    {
+        bool isCorrect = true;
+
+        for (int i = 0; i < randomSoundSequence.Count; i++)
+        {
+            if (playerAnswers[i].colorIndex != randomSoundSequence[i])
+            {
+                isCorrect = false;
+                break;
+            }
+        }
+
+        if (isCorrect)
+        {
+            Debug.Log("ถูกต้อง!");
+        }
+        else
+        {
+            Debug.Log("ผิด ลองใหม่!");
+        }
+    }
+
 
 
 }
