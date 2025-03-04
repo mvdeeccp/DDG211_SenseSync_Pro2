@@ -7,7 +7,7 @@ public class ColorDrop : MonoBehaviour, IDropHandler
 {
     public void OnDrop(PointerEventData eventData)
     {
-        if (transform.childCount == 0)  // ถ้าช่องนี้ยังว่าง
+        if (transform.childCount == 0)  // ถ้ามีของอยู่แล้วไม่รับเพิ่ม
         {
             GameObject dropped = eventData.pointerDrag;
             dropped.transform.SetParent(transform);
