@@ -26,16 +26,23 @@ public class SoundGameManager : MonoBehaviour
     public void StartNewRound()
     {
         currentRoundSounds.Clear();
-        List<SoundClip> shuffled = new List<SoundClip>(allSounds);
-        shuffled.Shuffle();
 
-        if (allSounds.Count < 3)
+        if (allSounds.Count < 2)
         {
-            Debug.LogWarning("Not enough sounds in allSounds list! Add at least 3.");
+            Debug.LogWarning("Not enough sounds in allSounds list! Add at least 2.");
+            return;
         }
 
-        int countToTake = Mathf.Min(3, shuffled.Count);
-        currentRoundSounds.AddRange(shuffled.GetRange(0, countToTake));
+        // สุ่มเสียงแรกแบบไม่ซ้ำ
+        SoundClip firstSound = allSounds[Random.Range(0, allSounds.Count)];
+        currentRoundSounds.Add(firstSound);
+
+        // สุ่มเสียงที่เหลือ โดยอนุญาตให้เสียงเดิมเล่นซ้ำได้
+        for (int i = 1; i < 3; i++)
+        {
+            SoundClip randomSound = allSounds[Random.Range(0, allSounds.Count)];
+            currentRoundSounds.Add(randomSound);  // อนุญาตให้เสียงซ้ำได้
+        }
 
         // Debug ลำดับเสียงที่สุ่มได้
         Debug.Log("New Round Sounds Order:");
@@ -46,7 +53,6 @@ public class SoundGameManager : MonoBehaviour
 
         StartCoroutine(PlaySoundsInOrder());
     }
-
 
     IEnumerator PlaySoundsInOrder()
     {
@@ -71,7 +77,6 @@ public class SoundGameManager : MonoBehaviour
     public void CheckAnswers()
     {
         bool isCorrect = true;
-        Debug.Log("Checking Player Choices:");
 
         for (int i = 0; i < currentRoundSounds.Count; i++)
         {
@@ -95,7 +100,6 @@ public class SoundGameManager : MonoBehaviour
             Debug.Log("Wrong Order!");
         }
     }
-
 
     public void OnSubmitButtonPressed()
     {

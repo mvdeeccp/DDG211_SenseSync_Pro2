@@ -326,10 +326,10 @@ MonoBehaviour:
   - {fileID: 1028847538}
   audioSource: {fileID: 1000454084}
   colorSounds:
-  - {fileID: 8300000, guid: fe4043f993d27364bb23f05719f694a7, type: 3}
-  - {fileID: 8300000, guid: bb6569ddb351db04ab6cfc0f8a188161, type: 3}
-  - {fileID: 8300000, guid: 0b5b362c65f6abc4189a0ad90324eb25, type: 3}
-  - {fileID: 8300000, guid: 8f165ca30e88782438984983d400459e, type: 3}
+  - {fileID: 8300000, guid: 0d1ad3fa34bbb1446926ca781e1e354f, type: 3}
+  - {fileID: 8300000, guid: caa2c0c9050755942bd048227c21363c, type: 3}
+  - {fileID: 8300000, guid: 17efaed666ef20744aac44691120ef23, type: 3}
+  - {fileID: 8300000, guid: 92eee3a09475d0b439108ca406ef22ab, type: 3}
 --- !u!4 &734249213
 Transform:
   m_ObjectHideFlags: 0
