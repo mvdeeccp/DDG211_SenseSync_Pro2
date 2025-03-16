@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - DropSlot
+  - GridSlot
   layers:
   - Default
   - TransparentFX
