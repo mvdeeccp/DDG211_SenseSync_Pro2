@@ -4,36 +4,45 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
-    public int rows = 3;  // จำนวนแถว
-    public int cols = 3;  // จำนวนคอลัมน์
-    public float cellSize = 1.1f; // ขนาดของแต่ละช่อง
-    public GameObject gridSlotPrefab; // Prefab ของ GridSlot
+    public static GridManager Instance;
+    private GridCell[,] gridCells;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {
-        GenerateGrid();
+        // โหลด GridCell ที่มีอยู่ใน Grid Layout Group
+        GridCell[] cells = GetComponentsInChildren<GridCell>();
+        gridCells = new GridCell[3, 3];
+
+        for (int i = 0; i < cells.Length; i++)
+        {
+            int x = i % 3;
+            int y = i / 3;
+            cells[i].gridPos = new Vector2Int(x, y);
+            gridCells[x, y] = cells[i];
+        }
     }
 
-    private void GenerateGrid()
+    public bool CanPlaceBlock(Vector2Int gridPos)
     {
-        if (gridSlotPrefab == null)
+        if (gridPos.x < 0 || gridPos.x >= 3 || gridPos.y < 0 || gridPos.y >= 3)
         {
-            Debug.LogError("GridSlot Prefab ไม่ถูกกำหนด!");
-            return;
+            return false;
         }
+        return !gridCells[gridPos.x, gridPos.y].isOccupied;
+    }
 
-        for (int row = 0; row < rows; row++)
+    public void PlaceBlock(Vector2Int gridPos)
+    {
+        if (CanPlaceBlock(gridPos))
         {
-            for (int col = 0; col < cols; col++)
-            {
-                Vector3 spawnPosition = new Vector3(col * cellSize, -row * cellSize, 0);
-                GameObject newSlot = Instantiate(gridSlotPrefab, spawnPosition, Quaternion.identity);
-                newSlot.transform.SetParent(transform); // ทำให้เป็นลูกของ GridManager
-
-                // ตั้งชื่อให้ช่อง (เช่น GridSlot_0_0, GridSlot_1_2)
-                newSlot.name = $"GridSlot_{row}_{col}";
-            }
+            gridCells[gridPos.x, gridPos.y].SetOccupied(true);
         }
     }
 }
+
 
