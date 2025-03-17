@@ -6,6 +6,7 @@ TagManager:
   tags:
   - DropSlot
   - GridSlot
+  - DraggableObject
   layers:
   - Default
   - TransparentFX
